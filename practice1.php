@@ -18,11 +18,14 @@ try {
 }
 
 
-$stmt = $pdo->prepare("INSERT INTO b_table(id, name, score, naiyou,
-indate )VALUES(NULL, :name, :score, :naiyou, sysdate())");
-$stmt->bindValue(':name', $name, PDO::PARAM_STR);
-$stmt->bindValue(':score', $score, PDO::PARAM_INT);
-$stmt->bindValue(':naiyou', $naiyou, PDO::PARAM_STR);
+$sql = "INSERT INTO b_table(id, name, score, naiyou,
+indate )VALUES(NULL, :a1, :a2, :a3, sysdate())";
+
+$stmt = $pdo->prepare($sql);
+
+$stmt->bindValue(':a1', $name, PDO::PARAM_STR);
+$stmt->bindValue(':a2', $score, PDO::PARAM_INT);
+$stmt->bindValue(':a3', $naiyou, PDO::PARAM_STR);
 $status = $stmt->execute();
 
 if ($status==false) {
@@ -32,3 +35,4 @@ if ($status==false) {
     header("Location: practice.php");
     exit;
 }
+?>
