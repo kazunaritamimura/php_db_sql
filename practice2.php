@@ -1,29 +1,10 @@
 <?php
-
-if(
-    !isset($_POST["name"])||$_POST["name"]==""||
-    !isset($_POST["score"])||$_POST["score"]==""||
-    !isset($_POST["naiyou"])||$_POST["naiyou"]==""
-){
-    exit('ParamError');
-}
-
-$name=$_POST["name"];
-$score=$_POST["score"];
-$naiyou=$_POST["naiyou"];
-
 try {
 $pdo = new PDO('mysql:dbname=b_db;charset=utf8;host=localhost','root','root');
 } catch (PDOException $e) {
   exit('データベースに接続できませんでした。'.$e->getMessage());
 }
 
-$sql = "INSERT INTO b_table（id,name,score,naiyou,indate)VALUES(NULL,:a1,:a2,:a3,sysdate()）";
-$stmt=$pdo->prepare($sql);
-$stmt->bindValue(':a1',$name,PDO::PARAM_STR);
-$stmt->bindValue(':a1',$score,PDO::PARAM_STR);
-$stmt->bindValue(':a1',$naiyou,PDO::PARAM_STR);
-$status=$stmt->execute();
 
 $stmt = $pdo->prepare("SELECT * FROM b_table");
 $status = $stmt->execute();
@@ -35,12 +16,12 @@ if($status==false){
 }else{
   while( $result = $stmt->fetch(PDO::FETCH_ASSOC)){
     $view .= "<p>";
-    $view .= $result["id"].":".$result["email"].$result["indate"];
+    $view .= $result["name"].":".$result["score"].":".$result["naiyou"];
     $view .= "</p>";
   }
-
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -59,7 +40,7 @@ if($status==false){
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-      <a class="navbar-brand" href="index.php">変差値診断</a>
+      <a class="navbar-brand" href="index.php">変人チェック</a>
       </div>
     </div>
   </nav>
